@@ -1,0 +1,6 @@
+id=sensordisabler_system
+name=Sensor Disabler (System App)
+version=v1.0
+versionCode=1
+author=wardellbagby
+description=Systemlessly installs Sensor Disabler as a system app. Enable it in Xposed after reboot. Special thanks to anemia004 for the Magisk module template.
