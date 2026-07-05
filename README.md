@@ -8,7 +8,7 @@ It has been testing and confirmed working from SDK 21 (Lollipop) to SDK 29 (Pie)
 Installation
 ------------
  1. Download and install [Xposed framework](http://repo.xposed.info/module/de.robv.android.xposed.installer)
- 2. Search for and install [Sensor Disabler](https://play.google.com/store/apps/details?id=com.mrchandler.disableprox) module. Alternatively: Download the APK from one of the Release tags or build it from source.
+ 2. Search for and install [Sensor Disabler](https://apt.izzysoft.de/fdroid/index/apk/com.mrchandler.disableprox) module. Alternatively: Download the APK from one of the Release tags or build it from source.
  3. Activate the module and reboot
 
 Links
