@@ -17,7 +17,7 @@ It has been tested and confirmed working from SDK 21 (Lollipop) to SDK 29 (Pie).
 
 ### Method 2 – Magisk (system app + Xposed)
 1. Make sure you have [Magisk](https://github.com/topjohnwu/Magisk) installed.
-2. Download the latest **SensorDisabler-Magisk.zip** from the [Releases page](https://github.com/YOUR_USERNAME/sensor-disabler/releases/latest) of this fork.
+2. Download the latest **SensorDisabler-Magisk.zip** from the [Releases page](https://github.com/anemia004/sensor-disabler-module/releases/tag/latest-module) of this fork.
 3. Open Magisk → **Modules** → **Install from storage** → select the zip.
 4. Reboot. The app will appear in your app drawer.
 5. Open Xposed Installer → **Modules** → enable **Sensor Disabler**.
