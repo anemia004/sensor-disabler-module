@@ -1,0 +1,63 @@
+name: Auto Magisk Module from Upstream Release
+
+on:
+  schedule:
+    - cron: '0 0 * * *'           # runs daily
+  workflow_dispatch:               # manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this fork
+        uses: actions/checkout@v4
+
+      - name: Get latest APK from upstream release
+        id: upstream
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          RELEASE_JSON=$(gh api repos/wardellbagby/sensor-disabler/releases/latest)
+          APK_URL=$(echo "$RELEASE_JSON" | jq -r '.assets[] | select(.name | endswith(".apk")) | .browser_download_url' | head -1)
+          if [ -z "$APK_URL" ]; then
+            echo "No APK found in latest release"
+            exit 1
+          fi
+          echo "APK_URL=$APK_URL" >> $GITHUB_OUTPUT
+          echo "Found APK: $APK_URL"
+
+      - name: Download APK
+        run: wget -O SensorDisabler.apk "${{ steps.upstream.outputs.APK_URL }}"
+
+      - name: Prepare Magisk module
+        run: |
+          cp -r magisk-module magisk-module-final
+          mkdir -p magisk-module-final/system/priv-app/SensorDisabler
+          mv SensorDisabler.apk magisk-module-final/system/priv-app/SensorDisabler/SensorDisabler.apk
+          chmod 644 magisk-module-final/system/priv-app/SensorDisabler/SensorDisabler.apk
+
+      - name: Create flashable zip
+        run: |
+          cd magisk-module-final
+          zip -r ../SensorDisabler-Magisk.zip *
+          cd ..
+
+      - name: Update latest-module tag
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git tag -f latest-module
+          git push -f origin latest-module
+
+      - name: Create release with zip
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: latest-module
+          name: "Sensor Disabler Magisk Module (auto-updated)"
+          body: "Automatically built from the latest upstream APK. Flash this zip in Magisk."
+          files: SensorDisabler-Magisk.zip
+          draft: false
+          prerelease: false
